@@ -41,6 +41,10 @@ final class TaskListViewController: UIViewController {
   }
   
   private func filterTasks(by priority: Priority?) {
+    defer {
+      tableView.reloadData()
+    }
+    
     guard let priority = priority else {
       self.filteredTask = self.tasksRelay.value
       print(filteredTask)
@@ -60,12 +64,12 @@ final class TaskListViewController: UIViewController {
 
 extension TaskListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 0
+    return filteredTask.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableViewCell", for: indexPath) 
-    
+    cell.textLabel?.text = filteredTask[indexPath.row].title
     return cell
   }
 
